@@ -6,12 +6,11 @@
  * @param {number} n - The number of points to generate.
  * @return {Array} An array of Coords objects representing points on the ellipse.
  */
-function GenerateEllipsePoints(semiMajor, semiMinor, n) {
+function GenerateEllipsePoints(semiMajor, semiMinor, n, phi) {
   let inc = Math.PI / n;
-  let phi = 0;
   let res = [];
 
-  while (phi < Math.PI && res.length < n) {
+  while (phi < Math.PI  && res.length < n) {
     res.push(new Coords(semiMajor * Math.cos(phi), semiMinor * Math.sin(phi)));
     phi += inc;
   }
@@ -71,7 +70,6 @@ function DrawHorizontals(
  * @param {number} horizonHeight is established early in the program via the "indent" variable, is used to determine where to stop drawing the line so that it intersects with the horizon
  */
 function DrawRays(points, canvasCtx, ellipseCentre, horizonHeight) {
-  console.log("DrawRays reports horizonHeight: " + horizonHeight);
   for (let i = 0; i < points.length; i++) {
     let point = points[i];
 
