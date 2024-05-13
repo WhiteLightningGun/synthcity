@@ -10,7 +10,7 @@ function GenerateEllipsePoints(semiMajor, semiMinor, n, phi) {
   let inc = Math.PI / n;
   let res = [];
 
-  while (phi < Math.PI  && res.length < n) {
+  while (phi < Math.PI && res.length < n) {
     res.push(new Coords(semiMajor * Math.cos(phi), semiMinor * Math.sin(phi)));
     phi += inc;
   }

@@ -1,3 +1,23 @@
 body {
   background-color: rgb(27, 28, 32);
 }
+
+.canvas-wrapper {
+  position: relative;
+}
+
+.canvas-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: radial-gradient(
+    ellipse 120% 120% at 50% 65%,
+    rgb(255, 110, 255),
+    rgb(0, 183, 255)
+  );
+  mix-blend-mode: hue;
+  pointer-events: none;
+}

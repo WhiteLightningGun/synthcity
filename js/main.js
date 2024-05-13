@@ -1,4 +1,4 @@
-var canvas = document.getElementById("canvas");
+var canvas = document.getElementById("canvas1");
 var canvasCtx = canvas.getContext("2d");
 
 let ellipseCentre = new Coords(1280 / 2, 100 + 720 / 2);
