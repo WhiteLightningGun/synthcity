@@ -47,10 +47,11 @@ function DrawHorizontals(
   semiMinorAxis,
   horizonHeight
 ) {
+  canvasCtx.strokeStyle = "magenta";
   let midPhase = points.length / 2;
   for (let i = midPhase; i < points.length; i++) {
     let midPhasePoint = points[i];
-    if (midPhasePoint.y < semiMinorAxis - horizonHeight) {
+    if (midPhasePoint.y <= semiMinorAxis - horizonHeight) {
       canvasCtx.beginPath();
       canvasCtx.moveTo(0, canvasCenter.y + (-midPhasePoint.y + semiMinorAxis));
       canvasCtx.lineTo(
@@ -80,48 +81,12 @@ function DrawRays(points, canvasCtx, ellipseCentre, horizonHeight) {
     let x1 = ellipseCentre.x;
     let y1 = ellipseCentre.y;
 
-    let x = ((x2 - x1) / (y2 - y1)) * horizonHeight + 1;
+    let x = ((x2 - x1) / (y2 - y1)) * horizonHeight;
 
     canvasCtx.strokeStyle = "magenta";
     canvasCtx.beginPath();
     canvasCtx.moveTo(ellipseCentre.x + point.x, ellipseCentre.y + point.y);
-    canvasCtx.lineTo(x + ellipseCentre.x, horizonHeight + ellipseCentre.y + 1); // calculated from intersection point
+    canvasCtx.lineTo(x + ellipseCentre.x, horizonHeight + ellipseCentre.y); // calculated from intersection point
     canvasCtx.stroke();
   }
 }
-
-/*
-
-
-function DrawHorizontals(points, canvasCtx, canvasCenter, semiMinorAxis) {
-  let midPhase = points.length / 2;
-  console.log(points);
-  for (let i = 0; i < points.length; i++) {
-    let point = points[i];
-    canvasCtx.strokeStyle = "magenta";
-
-    canvasCtx.stroke();
-    canvasCtx.fill();
-
-    // Draw a line from the point to the center of the canvas
-    canvasCtx.beginPath();
-    canvasCtx.moveTo(canvasCenter.x + point.x, canvasCenter.y + point.y);
-    canvasCtx.lineTo(canvasCenter.x, canvasCenter.y);
-    canvasCtx.stroke();
-
-    if (i + midPhase < points.length) {
-      let midPhasePoint = points[i + midPhase];
-      canvasCtx.beginPath();
-      canvasCtx.moveTo(0, canvasCenter.y + (-midPhasePoint.y + semiMinorAxis));
-      canvasCtx.lineTo(
-        canvas.width,
-        canvasCenter.y + (-midPhasePoint.y + semiMinorAxis)
-      );
-      canvasCtx.stroke();
-    }
-  }
-}
-
-
-
-*/
