@@ -6,6 +6,17 @@ body {
   position: relative;
 }
 
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url("../images/background.png") fixed;
+  background-size: contain;
+}
+
 .canvas-wrapper::after {
   content: "";
   position: absolute;

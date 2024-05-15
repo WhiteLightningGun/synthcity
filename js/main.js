@@ -28,7 +28,7 @@ let horizonHeight = initialPoints[horizontalIndent].y;
 function animate() {
   // Clear the canvas
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-  canvasCtx.fillStyle = "#000000";
+  canvasCtx.fillStyle = "#00000000";
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 
   DrawHorizontals(
