@@ -13,7 +13,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: url("../images/background.png") fixed;
+  background: url("../images/background1.png");
   background-size: contain;
 }
 
