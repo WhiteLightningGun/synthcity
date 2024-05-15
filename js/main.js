@@ -1,6 +1,8 @@
 var canvas = document.getElementById("canvas1");
 var canvasCtx = canvas.getContext("2d");
 
+var canvasWrap = document.getElementById("canvas-wrap");
+
 let ellipseCentre = new Coords(1280 / 2, 100 + 720 / 2);
 
 let semiMajorR = (1280 * 8) / 3;
@@ -9,7 +11,7 @@ let semiMinorR = (720 * 2) / 5;
 
 let nPoints = 50;
 
-let horizontalIndent = 1;
+let horizontalIndent = 2;
 
 let phi = 0;
 
@@ -18,35 +20,24 @@ const initialPoints = GenerateEllipsePoints(
   semiMinorR,
   nPoints,
   phi
-); // used to draw horizontal lines
+);
 
-/**
- * @param horizonHeight horizonHeight is relative to the internal coordinate system of the ellipse, this maintains consistency with points and simplifies interpolation calculations
- */
+const horizontalPoints = GenerateHorizontalPoints(semiMinorR, nPoints);
+
 let horizonHeight = initialPoints[horizontalIndent].y;
+
+canvasCtx.lineWidth = CalculateLineWidth(canvasWrap.offsetWidth);
 
 function animate() {
   // Clear the canvas
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
   // draw sun disc
-  canvasCtx.strokeStyle = "yellow";
-  canvasCtx.beginPath();
-  canvasCtx.arc(ellipseCentre.x, ellipseCentre.y / 2, 130, 0, 2 * Math.PI); // x, y, radius, startAngle, endAngle
-  canvasCtx.stroke();
-  canvasCtx.fillStyle = "#FFFF0008"; // mysterious black sun
-  canvasCtx.fill(); // Fill the circle
-  //fill black rectangle upto horizon level
-  canvasCtx.fillStyle = "#000000";
-  canvasCtx.fillRect(
-    0,
-    canvas.height + 2.5 * horizonHeight - semiMinorR,
-    canvas.width,
-    canvas.height
-  );
+  DrawSunDisc(canvasCtx, ellipseCentre, "magenta", 100);
+
+  DrawOccludingRectangle();
 
   DrawHorizontals(
-    initialPoints,
+    horizontalPoints,
     canvasCtx,
     ellipseCentre,
     semiMinorR,
@@ -60,13 +51,8 @@ function animate() {
   let nextPoints = GenerateEllipsePoints(semiMajorR, semiMinorR, nPoints, phi);
   DrawRays(nextPoints, canvasCtx, ellipseCentre, horizonHeight);
 
-  //draw uppermost horizontal line
-  canvasCtx.beginPath();
-  canvasCtx.moveTo(0, ellipseCentre.y + horizonHeight - 1);
-  canvasCtx.lineTo(canvas.width, ellipseCentre.y + horizonHeight - 1);
-  canvasCtx.stroke();
+  //DrawUpperHorizontal(canvasCtx, ellipseCentre, horizonHeight);
 
-  // Call the next frame
   requestAnimationFrame(animate);
 }
 

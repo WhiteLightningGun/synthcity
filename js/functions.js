@@ -17,27 +17,23 @@ function GenerateEllipsePoints(semiMajor, semiMinor, n, phi) {
   return res;
 }
 
-function RotatedEllipsePoints(semiMajor, semiMinor, n) {
-  let inc = Math.PI / n;
-  let phi = 0 + 0.01;
-
+function GenerateHorizontalPoints(semiMinor, n, phi = 0) {
+  let inc = (2 * Math.PI) / n;
   let res = [];
-
-  while (phi < Math.PI) {
-    res.push(new Coords(semiMajor * Math.cos(phi), semiMinor * Math.sin(phi)));
+  let halfN = Math.floor(n / 2);
+  while (phi < Math.PI && res.length < halfN) {
+    res.push(semiMinor * Math.cos(phi));
     phi += inc;
   }
-
   return res;
 }
 
 /**
- * Takes the initially generated set of ellipse points and draws the appropriate horizontal lines on the canvas context.
+ * Works with the single dimensional array produced by GenerateHorizontalPoints()
  * @param {Array} points
  * @param {CanvasRenderingContext2D} canvasCtx
  * @param {Coords} canvasCenter
  * @param {number} semiMinorAxis
- * @param {number} indent clips the uppermost horizontal lines from being drawn, values from 0-5 are recommended
  */
 function DrawHorizontals(
   points,
@@ -47,18 +43,17 @@ function DrawHorizontals(
   horizonHeight
 ) {
   canvasCtx.strokeStyle = "magenta";
-  let midPhase = points.length / 2;
-  for (let i = midPhase; i < points.length; i++) {
-    let midPhasePoint = points[i];
-    if (midPhasePoint.y <= semiMinorAxis - horizonHeight) {
-      canvasCtx.beginPath();
-      canvasCtx.moveTo(0, canvasCenter.y + (-midPhasePoint.y + semiMinorAxis));
-      canvasCtx.lineTo(
-        canvas.width,
-        canvasCenter.y + (-midPhasePoint.y + semiMinorAxis)
-      );
-      canvasCtx.stroke();
-    }
+  for (let i = 0; i < points.length; i++) {
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(
+      0,
+      canvasCenter.y + (-points[i] + semiMinorAxis + horizonHeight)
+    );
+    canvasCtx.lineTo(
+      canvas.width,
+      canvasCenter.y + (-points[i] + semiMinorAxis + horizonHeight)
+    );
+    canvasCtx.stroke();
   }
 }
 
@@ -87,4 +82,62 @@ function DrawRays(points, canvasCtx, ellipseCentre, horizonHeight) {
     canvasCtx.lineTo(x + ellipseCentre.x, horizonHeight + ellipseCentre.y); // calculated from intersection point
     canvasCtx.stroke();
   }
+}
+
+/**
+ * Used to Calculates line thickness used by canvas context inversely proportional on div size and by extension screen size.
+ * @param {*} divSize
+ * @returns
+ */
+function CalculateLineWidth(divSize) {
+  //greater than 600 = 1 and less than 300 equal =3 with straigtline interpolation between
+
+  if (divSize > 600) {
+    return 1;
+  } else if (divSize < 300) {
+    return 4;
+  } else {
+    let newWidth = -0.01 * divSize + 7;
+    return newWidth;
+  }
+}
+
+/**
+ *
+ * @param {*} ellipseCentre Coords object that contains x y position of ellipse centre, the proverbial vanishing point of the entire image
+ * @param {*} horizonHeight integer value marking where the location of the horizon line on the y direction
+ */
+function DrawUpperHorizontal(canvasCtx, ellipseCentre, horizonHeight) {
+  canvasCtx.beginPath();
+  canvasCtx.moveTo(0, ellipseCentre.y + horizonHeight - 1);
+  canvasCtx.lineTo(canvas.width, ellipseCentre.y + horizonHeight - 1);
+  canvasCtx.stroke();
+}
+
+function DrawSunDisc(
+  canvasCtx,
+  ellipseCentre,
+  outlineColour = "yellow",
+  radius = 130,
+  fillColour = "#FFFF0008"
+) {
+  canvasCtx.strokeStyle = outlineColour;
+  canvasCtx.beginPath();
+  canvasCtx.arc(ellipseCentre.x, ellipseCentre.y / 2, radius, 0, 2 * Math.PI); // x, y, radius, startAngle, endAngle
+  canvasCtx.stroke();
+  canvasCtx.fillStyle = fillColour; // #FFFF0008 is the mysterious black sun setting
+  canvasCtx.fill(); // Fill the circle
+}
+
+/**
+ * create translucent black rectangle up to horizon level
+ */
+function DrawOccludingRectangle() {
+  canvasCtx.fillStyle = "#00000090";
+  canvasCtx.fillRect(
+    0,
+    canvas.height + 1.72 * horizonHeight - semiMinorR + 2,
+    canvas.width,
+    canvas.height
+  );
 }
