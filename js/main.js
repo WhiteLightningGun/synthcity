@@ -28,6 +28,15 @@ let horizonHeight = initialPoints[horizontalIndent].y;
 function animate() {
   // Clear the canvas
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // draw sun disc
+  canvasCtx.strokeStyle = "yellow";
+  canvasCtx.beginPath();
+  canvasCtx.arc(ellipseCentre.x, ellipseCentre.y / 2, 130, 0, 2 * Math.PI); // x, y, radius, startAngle, endAngle
+  canvasCtx.stroke();
+  canvasCtx.fillStyle = "#FFFF0008"; // mysterious black sun
+  canvasCtx.fill(); // Fill the circle
+  //fill black rectangle upto horizon level
   canvasCtx.fillStyle = "#000000";
   canvasCtx.fillRect(
     0,
@@ -51,12 +60,11 @@ function animate() {
   let nextPoints = GenerateEllipsePoints(semiMajorR, semiMinorR, nPoints, phi);
   DrawRays(nextPoints, canvasCtx, ellipseCentre, horizonHeight);
 
-  //draw uppermost horizontal
+  //draw uppermost horizontal line
   canvasCtx.beginPath();
   canvasCtx.moveTo(0, ellipseCentre.y + horizonHeight - 1);
   canvasCtx.lineTo(canvas.width, ellipseCentre.y + horizonHeight - 1);
   canvasCtx.stroke();
-  // Draw your animation
 
   // Call the next frame
   requestAnimationFrame(animate);
