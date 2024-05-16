@@ -97,20 +97,6 @@ body {
   background-size: contain;
   animation: opacityChange 8s ease infinite;
 }
-
-.background4 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  background: url("../images/sundisc1.png");
-  background-size: contain;
-  filter: blur(40px);
-  /*animation: opacityChange 8s ease infinite; */
-}
-
 @keyframes opacityChange {
   0% {
     opacity: 1;
@@ -126,5 +112,36 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+.background4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: url("../images/sundisc1.png");
+  background-size: contain;
+  filter: blur(40px);
+  animation: blurChange 10s linear infinite;
+}
+
+@keyframes blurChange {
+  0% {
+    filter: blur(40px);
+  }
+  25% {
+    filter: blur(50px);
+  }
+  50% {
+    filter: blur(55px);
+  }
+  75% {
+    filter: blur(50px);
+  }
+  100% {
+    filter: blur(40px);
   }
 }

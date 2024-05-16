@@ -60,7 +60,7 @@ function animate() {
     ellipseCentre,
     horizonHeight,
     semiMinorR,
-    "#1a1e42C8",
+    "#1a1e42AA",
     "slower"
   );
   DrawBuildings(
