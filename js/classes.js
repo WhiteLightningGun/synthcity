@@ -45,10 +45,15 @@ class Building {
     return wg;
   }
 
-  getPos() {}
+  Update(arg = "regular") {
+    if (arg == "regular") {
+      this.posX = this.posX - 0.00009;
+    } else if (arg == "slow") {
+      this.posX = this.posX - 0.00006;
+    } else if (arg == "slower") {
+      this.posX = this.posX - 0.00003;
+    }
 
-  Update() {
-    this.posX = this.posX - 0.00009;
     if (this.posX < -0.5) {
       this.posX = 0.5;
     }

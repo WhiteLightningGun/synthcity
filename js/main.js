@@ -15,9 +15,12 @@ let horizontalIndent = 2;
 
 let phi = 0;
 
+let rectangleIncrement = 0;
+
 //let buildingHeights = GenerateRandomHeights(68, 250);
-let buildings = GenerateBuildings(48, 60); // 60 is good enough
-console.log(buildings);
+let buildings = GenerateBuildings(30, 60, 25); //
+let buildingsB = GenerateBuildings(65, 70, 10);
+let buildingsC = GenerateBuildings(95, 100, 4); //
 let phase = 0;
 
 const initialPoints = GenerateEllipsePoints(
@@ -34,10 +37,12 @@ let horizonHeight = initialPoints[horizontalIndent].y;
 canvasCtx.lineWidth = CalculateLineWidth(canvasWrap.offsetWidth);
 
 function animate() {
-  // Clear the canvas
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-  // draw sun disc
-  DrawSunDisc(canvasCtx, ellipseCentre, "magenta", 100);
+  DrawSunDisc(canvasCtx, ellipseCentre, "yellow", 100);
+  DrawSunBars(canvasCtx, phase);
+  if (phase < Math.PI / 2) {
+    phase += 0.006;
+  }
 
   DrawOccludingRectangle();
 
@@ -48,36 +53,42 @@ function animate() {
     semiMinorR,
     horizonHeight
   );
-  phi += 0.0005;
 
-  if (phi > Math.PI / nPoints) {
-    phi = 0;
-  }
-  /*DrawBuildings(
+  DrawBuildings(
     canvasCtx,
-    buildingHeights,
+    buildingsC,
     ellipseCentre,
     horizonHeight,
-    20,
-    inc
+    semiMinorR,
+    "#1a1e42C8",
+    "slower"
   );
-  */
-  DrawBuildingsB(
+  DrawBuildings(
+    canvasCtx,
+    buildingsB,
+    ellipseCentre,
+    horizonHeight,
+    semiMinorR,
+    "#1a1349",
+    "slow"
+  );
+  DrawBuildings(
     canvasCtx,
     buildings,
     ellipseCentre,
     horizonHeight,
     semiMinorR,
-    phase
+    "#190539",
+    "regular"
   );
+  phi += 0.0005;
+
+  if (phi > Math.PI / nPoints) {
+    phi = 0;
+  }
   let nextPoints = GenerateEllipsePoints(semiMajorR, semiMinorR, nPoints, phi);
   DrawRays(nextPoints, canvasCtx, ellipseCentre, horizonHeight);
 
-  //DrawUpperHorizontal(canvasCtx, ellipseCentre, horizonHeight);
-  phase += 0.0001;
-  if (phase > 2) {
-    phase = 0;
-  }
   requestAnimationFrame(animate);
 }
 

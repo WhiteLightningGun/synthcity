@@ -119,7 +119,7 @@ function DrawSunDisc(
   ellipseCentre,
   outlineColour = "yellow",
   radius = 130,
-  fillColour = "#FFFF0008"
+  fillColour = "#FFFF00FF"
 ) {
   canvasCtx.strokeStyle = outlineColour;
   canvasCtx.beginPath();
@@ -154,14 +154,21 @@ function GenerateRandomHeights(maxHeight = 50, count = 60) {
   return randomNumbers;
 }
 
-function GenerateBuildings(maxHeight = 50, count = 60) {
+/**
+ *
+ * @param {number} maxHeight
+ * @param {number} count
+ * @param {number} maxWidth
+ * @returns
+ */
+function GenerateBuildings(maxHeight = 50, count = 60, maxWidth = 18) {
   let res = [];
   let randomHeights = GenerateRandomHeights(maxHeight, count);
-  let maxWidth = 18;
   for (var i = 0; i < count; i++) {
-    let gap = Math.random() * 80;
+    let gap = Math.random() * maxWidth * 6;
     let posX = i / count - 0.5;
-    let newBuilding = new Building(maxWidth, randomHeights[i], gap, posX);
+    let newWidth = maxWidth - maxWidth / 3 + (Math.random() * maxWidth) / 3;
+    let newBuilding = new Building(newWidth, randomHeights[i], gap, posX);
     res.push(newBuilding);
   }
   return res;
@@ -169,38 +176,15 @@ function GenerateBuildings(maxHeight = 50, count = 60) {
 
 function DrawBuildings(
   canvasCtx,
-  buildingHeights,
-  ellipseCentre,
-  horizonHeight,
-  buildingWidth = 36,
-  inc
-) {
-  canvasCtx.fillStyle = "#000000AA";
-  let positionScale = 1; // scale this inversely proportional to distance from centre of canvas, use to control height and width of building
-  let currentPos = 1; // i.e. far left of canvas
-  for (let i = 0; i < buildingHeights.length; i++) {
-    positionScale = Math.sin((0.56 * Math.PI * currentPos) / 720);
-    canvasCtx.fillRect(
-      currentPos - inc,
-      ellipseCentre.y + horizonHeight - buildingHeights[i] * positionScale,
-      buildingWidth * positionScale,
-      buildingHeights[i] * positionScale
-    );
-    currentPos += (buildingWidth + 3) * positionScale;
-  }
-}
-
-function DrawBuildingsB(
-  canvasCtx,
   buildings,
   ellipseCentre,
   horizonHeight,
   semiMinorAxis,
-  time
+  colour = "#1b053d",
+  speed
 ) {
   //**Each building in array should have ability to scale itself according to a position argument given in this function */
-  canvasCtx.fillStyle = "#1b053d"; // "#230750"; //"#000000CD";
-
+  canvasCtx.fillStyle = colour; // "#230750"; //"#000000CD";
   for (let i = 0; i < buildings.length; i++) {
     canvasCtx.fillRect(
       buildings[i].getPosXAdjusted() * 7 * semiMinorAxis + canvas.width / 2,
@@ -208,6 +192,43 @@ function DrawBuildingsB(
       buildings[i].getWidthPlusGap(),
       buildings[i].getHeight()
     );
-    buildings[i].Update();
+    buildings[i].Update(speed);
+  }
+}
+
+function DrawSunBars(canvasCtx, phase) {
+  canvasCtx.fillStyle = "#000000";
+  canvasCtx.fillRect(
+    canvas.width / 2 - 105,
+    -40 + canvas.height / 3,
+    210,
+    15 * Math.sin(phase) + 1
+  );
+  canvasCtx.fillRect(
+    canvas.width / 2 - 105,
+    -1 + canvas.height / 3,
+    210,
+    12 * Math.sin(phase) + 1
+  );
+  canvasCtx.fillRect(
+    canvas.width / 2 - 95,
+    33 + canvas.height / 3,
+    190,
+    9 * Math.sin(phase) + 1
+  );
+  canvasCtx.fillRect(
+    canvas.width / 2 - 80,
+    60 + canvas.height / 3,
+    157,
+    5.5 * Math.sin(phase) + 1
+  );
+  canvasCtx.fillRect(
+    canvas.width / 2 - 50,
+    80 + canvas.height / 3,
+    100,
+    3 * Math.sin(phase) + 1
+  );
+  if (phase < Math.PI / 2) {
+    phase += 0.006;
   }
 }
