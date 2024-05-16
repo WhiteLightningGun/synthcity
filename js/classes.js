@@ -49,9 +49,9 @@ class Building {
     if (arg == "regular") {
       this.posX = this.posX - 0.00009;
     } else if (arg == "slow") {
-      this.posX = this.posX - 0.00006;
+      this.posX = this.posX - 0.00005;
     } else if (arg == "slower") {
-      this.posX = this.posX - 0.00003;
+      this.posX = this.posX - 0.000035;
     }
 
     if (this.posX < -0.5) {
