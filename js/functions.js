@@ -141,3 +141,73 @@ function DrawOccludingRectangle() {
     canvas.height
   );
 }
+
+function GenerateRandomHeights(maxHeight = 50, count = 60) {
+  var randomNumbers = [];
+  for (var i = 0; i < count; i++) {
+    let rand = Math.round(Math.random() * 20) * 0.05;
+    rand = rand > 0.9 ? rand + 0.2 : rand;
+    rand = rand < 0.1 ? rand + 0.2 : rand;
+    let nextNumber = maxHeight * rand;
+    randomNumbers.push(nextNumber);
+  }
+  return randomNumbers;
+}
+
+function GenerateBuildings(maxHeight = 50, count = 60) {
+  let res = [];
+  let randomHeights = GenerateRandomHeights(maxHeight, count);
+  let maxWidth = 18;
+  for (var i = 0; i < count; i++) {
+    let gap = Math.random() * 80;
+    let posX = i / count - 0.5;
+    let newBuilding = new Building(maxWidth, randomHeights[i], gap, posX);
+    res.push(newBuilding);
+  }
+  return res;
+}
+
+function DrawBuildings(
+  canvasCtx,
+  buildingHeights,
+  ellipseCentre,
+  horizonHeight,
+  buildingWidth = 36,
+  inc
+) {
+  canvasCtx.fillStyle = "#000000AA";
+  let positionScale = 1; // scale this inversely proportional to distance from centre of canvas, use to control height and width of building
+  let currentPos = 1; // i.e. far left of canvas
+  for (let i = 0; i < buildingHeights.length; i++) {
+    positionScale = Math.sin((0.56 * Math.PI * currentPos) / 720);
+    canvasCtx.fillRect(
+      currentPos - inc,
+      ellipseCentre.y + horizonHeight - buildingHeights[i] * positionScale,
+      buildingWidth * positionScale,
+      buildingHeights[i] * positionScale
+    );
+    currentPos += (buildingWidth + 3) * positionScale;
+  }
+}
+
+function DrawBuildingsB(
+  canvasCtx,
+  buildings,
+  ellipseCentre,
+  horizonHeight,
+  semiMinorAxis,
+  time
+) {
+  //**Each building in array should have ability to scale itself according to a position argument given in this function */
+  canvasCtx.fillStyle = "#1b053d"; // "#230750"; //"#000000CD";
+
+  for (let i = 0; i < buildings.length; i++) {
+    canvasCtx.fillRect(
+      buildings[i].getPosXAdjusted() * 7 * semiMinorAxis + canvas.width / 2,
+      ellipseCentre.y + horizonHeight - buildings[i].getHeight(),
+      buildings[i].getWidthPlusGap(),
+      buildings[i].getHeight()
+    );
+    buildings[i].Update();
+  }
+}
