@@ -21,7 +21,6 @@ let phi = 0;
 
 let rectangleIncrement = 0;
 
-//let buildingHeights = GenerateRandomHeights(68, 250);
 let buildings = GenerateBuildings(30, 60, 25); //
 let buildingsB = GenerateBuildings(65, 70, 10);
 let buildingsC = GenerateBuildings(95, 100, 4); //
