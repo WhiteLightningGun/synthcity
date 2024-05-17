@@ -1,3 +1,7 @@
+window.onload = function () {
+  document.querySelector("#holder").classList.add("fadeIn");
+};
+
 var canvas = document.getElementById("canvas1");
 var canvasCtx = canvas.getContext("2d");
 
@@ -60,7 +64,7 @@ function animate() {
     ellipseCentre,
     horizonHeight,
     semiMinorR,
-    "#1a1e42AA",
+    "#171b3aAA",
     "slower"
   );
   DrawBuildings(

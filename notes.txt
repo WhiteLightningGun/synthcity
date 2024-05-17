@@ -1,9 +1,0 @@
-pseudo code
-
-get centre of canvas
-
-create class for holding coords
-
-create way of generating all points along perimeter of ellipse seperated by a given argument in radians
-
-divide 2pi into 100 segments; use a while loop

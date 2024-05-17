@@ -145,3 +145,21 @@ body {
     filter: blur(40px);
   }
 }
+.initial {
+  opacity: 0;
+}
+
+.fadeIn {
+  animation: fadeIn 0.2s ease-in;
+  animation-delay: 0.1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
