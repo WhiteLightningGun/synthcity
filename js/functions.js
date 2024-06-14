@@ -1,5 +1,7 @@
 /**
- * Generates a set of perimeter points on an ellipse seperated by an even angular argument. This is used to generate the initial collection of points which can be used to characterise and draw the set of horizontal lines which will be static throughout the animation.
+ * Generates a set of perimeter points on an ellipse seperated by an even angular argument. 
+ * This is used to generate the initial collection of points which can be used to characterise and 
+ * draw the set of horizontal lines which will be static throughout the animation.
  *  Use the same arguments as RotatedEllipsePoints in order to prevent nonsensical results.
  * @param {number} semiMajor - The semi-major axis of the ellipse.
  * @param {number} semiMinor - The semi-minor axis of the ellipse.
